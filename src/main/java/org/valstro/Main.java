@@ -26,6 +26,13 @@ public class Main {
             }
         });
 
+        socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                System.out.println("Could not connect to server..");
+            }
+        });
+
         socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
