@@ -10,9 +10,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
+import static java.lang.Thread.sleep;
+
 public class Main {
 
-    public static void main(String[] args) throws URISyntaxException, IOException {
+    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
         Socket socket = IO.socket("http://localhost:3000");
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
@@ -32,31 +34,38 @@ public class Main {
             @Override
             public void call(Object... args) {
                 JSONObject res = (JSONObject) args[0];
+
                 if ((int) res.get("page") != -1) {
-                    System.out.println("(" + (res.get("page")) + "/" + (res.get("resultCount")) + ") " + res.get("name") + " - " + res.get("films"));
+                    System.out.println("(" + (res.get("page")) + "/" + (res.get("resultCount")) + ") " + res.get("name") + " - " + "[" + res.get("films") + "]");
+                    if ((int) res.get("page") == (int) res.get("resultCount")) {
+                        System.out.print("Enter search string (type '-c' to exit program) : ");
+                    }
                 }
                 else {
                     System.out.println(res.getString("error"));
+                    System.out.print("Enter search string (type '-c' to exit program) : ");
                 }
             }
         });
 
         socket.connect();
 
+        sleep(500);
+
+        System.out.print("Enter search string (type '-c' to exit program) : ");
         while (true) {
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("Enter search string (type '-c' to exit program) : ");
             String input = in.readLine();
             if (input.equals("-c")) {
                 break;
             }
             else {
+                System.out.println("Searching for " + input + "...");
                 socket.emit("search", new JSONObject().put("query", input));
             }
         }
 
         socket.disconnect();
-
 
     }
 }
