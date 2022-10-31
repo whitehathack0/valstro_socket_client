@@ -73,7 +73,6 @@ public class Main {
         // Sleep for 500ms after connecting to socket
         sleep(500);
 
-
         System.out.print("Enter search string (type '-c' to exit program) : ");
 
         /*  Continuously ask user for input and emit 'search' events */
