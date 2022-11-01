@@ -14,7 +14,7 @@ docker run -p 3000:3000 clonardo/socketio-backend
 - Ensure JDk 19 is setup as Project JDK (19.0.1)
 - Run ```mvn clean install``` in root to install dependencies
 
-- Run the src/main/java/org/valstro/Main.java file in IDE
+- Run the src/main/java/org/valstro/Client.java file in IDE
   
 - Open 'Run' tab in IDE to view console to enter input
 - To exit program enter "-c"
