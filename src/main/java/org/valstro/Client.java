@@ -2,7 +2,6 @@ package org.valstro;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,52 +18,34 @@ public class Client {
 
         Socket socket = IO.socket("http://localhost:3000");
 
-        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                System.out.println("Connected to server!");
-            }
-        });
+        socket.on(Socket.EVENT_CONNECT, args12 -> System.out.println("Connected to server!"));
 
-        socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                System.out.println("Could not connect to server..");
-            }
-        });
+        socket.on(Socket.EVENT_CONNECT_ERROR, args1 -> System.out.println("Could not connect to server.."));
 
-        socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                System.out.println("Disconnected from server..");
-            }
-        });
+        socket.on(Socket.EVENT_DISCONNECT, args13 -> System.out.println("Disconnected from server.."));
 
         /*  This is the 'search' event name method that will
             Sys.out when client receives 'search' event from server
         */
-        socket.on("search", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                JSONObject res = (JSONObject) args[0];
+        socket.on("search", args14 -> {
+            JSONObject res = (JSONObject) args14[0];
 
-                try {
-                    if ((int) res.get("page") != -1) {
-                        System.out.println("(" + (res.get("page")) + "/" + (res.get("resultCount")) + ") " + res.get("name") + " - " + "[" + res.get("films") + "]");
-                        if ((int) res.get("page") == (int) res.get("resultCount")) {
-                            System.out.println();
-                            System.out.print("Enter search string (type '-c' to exit program) : ");
-                        }
+            try {
+                if ((int) res.get("page") != -1) {
+                    System.out.println("(" + (res.get("page")) + "/" + (res.get("resultCount")) + ") " + res.get("name") + " - " + "[" + res.get("films") + "]");
+                    if ((int) res.get("page") == (int) res.get("resultCount")) {
+                        System.out.println();
+                        System.out.print("Enter search string (type '-c' to exit program) : ");
                     }
-                    else {
-                        System.out.println(res.get("error"));
-                        System.out.print("Enter search string ('-c' to exit program) : ");
-                    }
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
                 }
-
+                else {
+                    System.out.println(res.get("error"));
+                    System.out.print("Enter search string ('-c' to exit program) : ");
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
+
         });
 
         // Initialize a connection to server on localhost:3000
