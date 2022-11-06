@@ -71,13 +71,13 @@ public class Client {
         socket.connect();
 
         // Sleep for 500ms after connecting to socket
-        sleep(500);
+        sleep(1000);
 
         System.out.print("Enter search string (type '-c' to exit program) : ");
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
         /*  Continuously ask user for input and emit 'search' events */
         while (true) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             String input = in.readLine();
 
             // '-c' will break out of this while loop, ending the program
@@ -99,6 +99,7 @@ public class Client {
 
         // Disconnect from server once program ends
         socket.disconnect();
+        in.close();
 
     }
 }
